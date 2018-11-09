@@ -7,13 +7,20 @@ Author: John Antonacci
 Author URI: http://cleansupersites.com
 License: GPL2
 */
-function use_big_slider($post_id = 0)
+
+require('custom-meta.php');
+
+function use_big_slider()
 {
-    if (!$post_id) {
-        global $post;
-        $post_id = $post->ID;
+    global $post;
+    $return = false;
+    if (get_post_meta(get_the_ID(), '_jma_big_header_data_key', true)) {
+        $header_values =  get_post_meta(get_the_ID(), '_jma_big_header_data_key', true);
     }
-    return (is_front_page() || 'portfolio_item' == get_post_type($post_id));
+    if (is_array($header_values)) {
+        $return = $header_values['use_big_header'];
+    }
+    return $return;
 }
 
 
@@ -25,9 +32,17 @@ function big_slider_scripts()
 function jma_big_sl_body_cl($class)
 {
     global $jma_spec_options;
+    global $post;
     $class[] = 'big_slider';
     $class[] = $jma_spec_options['center_main_vert'];
     $class[] = $jma_spec_options['not_full_width_header'];
+    if (get_post_meta(get_the_ID(), '_jma_big_header_data_key', true)) {
+        $header_values =  get_post_meta(get_the_ID(), '_jma_big_header_data_key', true);
+    }
+    if (is_array($header_values)) {
+        $class[] = 'jmashowamount' . $header_values['show_amount'];
+    }
+
     return $class;
 }
 
@@ -194,12 +209,16 @@ function use_full_image($x)
 function big_slder_code()
 {
     global $jma_spec_options;
+    global $post;
+    if (get_post_meta(get_the_ID(), '_jma_big_header_data_key', true)) {
+        $header_values =  get_post_meta(get_the_ID(), '_jma_big_header_data_key', true);
+    }
     if (use_big_slider()) {
-        //if (has_nav_menu('jma_big_slider')) {
-        add_action('themeblvd_content_top', 'jma_big_local_menu');
-        add_filter('themeblvd_section_html_id', 'jma_section_html_id', 10, 4);
-        add_action('wp_enqueue_scripts', 'jma_scroll_scripts');
-        //}
+        if ($header_values['big_menu']) {
+            add_action('themeblvd_content_top', 'jma_big_local_menu');
+            add_filter('themeblvd_section_html_id', 'jma_section_html_id', 10, 4);
+            add_action('wp_enqueue_scripts', 'jma_scroll_scripts');
+        }
         add_filter('header_image_code_size', 'use_full_image', 15);
         add_action('wp_enqueue_scripts', 'big_slider_scripts', PHP_INT_MAX);
         add_filter('body_class', 'jma_big_sl_body_cl');
@@ -212,16 +231,16 @@ function big_slder_code()
 }
 add_action('template_redirect', 'big_slder_code', 999);
 
-
-function jma_big_slder_menu()
-{
-    register_nav_menu('jma_big_slider', __('Big Image Pages Local Nav', 'themeblvd'));
-}
-add_action('after_setup_theme', 'jma_big_slder_menu');
-
 function jma_big_local_menu()
 {
-    echo wp_nav_menu(array( 'theme_location' => 'jma_big_slider', 'menu_class' => 'jma-local-menu' ));
+    global $post;
+    if (get_post_meta(get_the_ID(), '_jma_big_header_data_key', true)) {
+        $header_values =  get_post_meta(get_the_ID(), '_jma_big_header_data_key', true);
+    }
+    if (is_array($header_values)) {
+        $menuslug = $header_values['big_menu'];
+    }
+    echo wp_nav_menu(array( 'menu' => $menuslug, 'menu_class' => 'jma-local-menu clearfix', 'container' => null ));
 }
 
 /**

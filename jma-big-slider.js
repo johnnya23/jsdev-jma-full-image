@@ -19,6 +19,17 @@ jQuery(document).ready(function($) {
     function fix_slider() {
         window_width = $window.width();
         if (window_width > 992) {
+            main_showing_by = 100;
+            classes = $body.attr('class').split(' ');
+            var i;
+            for (i = 0; i < classes.length; ++i) {
+                if (classes[i].match("^jmashowamount")) {
+                    get_main_showing_by = classes[i].replace("jmashowamount", "");
+                }
+
+            }
+            main_showing_by = parseInt(get_main_showing_by, 10);
+            console.log(main_showing_by);
             $body.addClass('big_slider_wide');
             $body.removeClass('big_slider_narrow');
             admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
@@ -30,7 +41,6 @@ jQuery(document).ready(function($) {
             image_ratio = image_height / image_width;
 
             window_height = $window.height();
-            main_showing_by = 100;
             available_height = $body.hasClass('constrict-header') ? window_height : window_height - top_height - main_showing_by;
             available_ratio = available_height / window_width;
 
