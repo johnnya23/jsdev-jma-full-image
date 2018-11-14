@@ -81,6 +81,15 @@
     display: block;
 }
 
+.big_slider_wide.constrict-header .site-header, .big_slider_wide.constrict-header #main {
+    background: none !important;
+}
+
+.big_slider_wide.constrict-header .jma-custom-wrap {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 .big_slider .site-main {
     margin-top: 1000px;
 }
