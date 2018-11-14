@@ -133,7 +133,6 @@ function bg_sl_dynamic_filter($dynamic_styles)
             array('-webkit-transition', 'margin-top 0.5s'),
             array('transition-delay', '1s'),
             array('-webkit-transition-delay', '1s'),
-            array('background', $jma_spec_options['site_page_color']),
             array('max-width', $big_main_width),
             array('margin', '0 auto'),
             array('padding', ' 0'),
@@ -142,7 +141,18 @@ function bg_sl_dynamic_filter($dynamic_styles)
             array('box-shadow', 'none'),
             array('border', 'none'),
             );
-    $dynamic_styles['bg_sl_110'] = array('.big_slider_wide .site-main > .wrap',
+    $dynamic_styles['bg_sl_105'] = array('.big_slider_wide #custom-main',
+            array('background', 'rgba(' . $root_rgb[0] . ',' . $root_rgb[1] . ',' . $root_rgb[2] . ',' . $jma_spec_options['main_trans'] . ')')
+            );
+    /*$dynamic_styles['bg_sl_110'] = array('.big_slider_wide .site-main > .wrap',
+            array('background', 'rgba(' . $root_rgb[0] . ',' . $root_rgb[1] . ',' . $root_rgb[2] . ',' . $jma_spec_options['main_trans'] . ')')
+        );*/
+    $dynamic_styles['bg_sl_115'] = array('.big_slider_wide.constrict-header .site-main > .wrap',
+            array('border', 'solid 1px ' . $jma_spec_options['footer_background_color']),
+            array('padding', '20px 0'),
+            array('background', 'rgba(' . $root_rgb[0] . ',' . $root_rgb[1] . ',' . $root_rgb[2] . ',' . $jma_spec_options['main_trans'] . ')')
+            );
+    $dynamic_styles['bg_sl_117'] = array('.big_slider_wide #main',
             array('background', 'rgba(' . $root_rgb[0] . ',' . $root_rgb[1] . ',' . $root_rgb[2] . ',' . $jma_spec_options['main_trans'] . ')'),
             array('border', 'solid 1px ' . $jma_spec_options['footer_background_color']),
             array('padding', '20px 0'),
@@ -151,22 +161,30 @@ function bg_sl_dynamic_filter($dynamic_styles)
             array('padding', '0 20px'),
             );
     if ($jma_spec_options['border_shadow'] == 'on') {
-        $dynamic_styles['bg_sl_130'] = array('.big_slider_wide .site-main > .wrap, .big_slider_wide.constrict-header .site-header > .wrap',
+        $dynamic_styles['bg_sl_130'] = array('.big_slider_wide.constrict-header .site-header > .wrap',
                     array('-webkkit-box-shadow', '0 2px 10px ' . $jma_spec_options['footer_background_color']),
                     array('box-shadow', '0 2px 10px ' . $jma_spec_options['footer_background_color']),
                     );
     }
 
-    $dynamic_styles['bg_sl_140'] = array('.big_slider_wide.constrict-header .site-header',
-            array('background', 'none!important'),
+    $dynamic_styles['bg_sl_140'] = array('.big_slider_wide.constrict-header .site-header, body.big_slider_wide.constrict-header #main, body.big_slider_wide #main > .wrap',
             array('max-width', ($jma_spec_options['site_width']+40) . 'px'),
             array('margin', '0 auto'),
-            array('padding', '0 20px'),
+            array('padding-left', '20px'),
+            array('padding-right', '20px'),
             );
-    $dynamic_styles['bg_sl_150'] = array('.big_slider_wide.constrict-header .site-header > .wrap, .big_slider_wide #wrapper',
+
+    $dynamic_styles['bg_sl_144'] = array('.big_slider_wide.constrict-header .site-header, body.big_slider_wide.constrict-header #main',
+                    array('background', 'none'),
+                    );
+
+    $dynamic_styles['bg_sl_145'] = array('.big_slider_wide.constrict-header .site-header',
+            array('background', 'none!important')
+            );
+    $dynamic_styles['bg_sl_150'] = array('.big_slider_wide.constrict-header .site-header > .wrap',
             array('border', 'solid 1px ' . $jma_spec_options['footer_background_color']),
-            array('background', $jma_spec_options['header_background_color']),
-            );
+            array('background', $jma_spec_options['header_background_color'])
+    );
     if ($jma_spec_options['body_shape'] == 'stretch') {
         $dynamic_styles['bg_sl_160'] = array('.big_slider_narrow .site-inner > .wrap > #full-page-title',
             array('display', 'none'),
@@ -215,9 +233,15 @@ function big_slder_code()
     }
     if (use_big_slider()) {
         if ($header_values['big_menu']) {
-            add_action('themeblvd_content_top', 'jma_big_local_menu');
+            $menu_hook = is_page_template('template_builder.php')? 'themeblvd_content_top': 'themeblvd_main_top';
+            add_action($menu_hook, 'jma_big_local_menu');
             add_filter('themeblvd_section_html_id', 'jma_section_html_id', 10, 4);
             add_action('wp_enqueue_scripts', 'jma_scroll_scripts');
+        }
+        if (is_page_template('template_builder.php') && $jma_spec_options['not_full_width_header']) {
+            //wrap the custom template with div .jma-custom-wrap
+            add_action('themeblvd_content_top', 'jma_custom_border_top', 1);
+            add_action('themeblvd_content_bottom', 'jma_custom_border_bottom', 9999);
         }
         add_filter('header_image_code_size', 'use_full_image', 15);
         add_action('wp_enqueue_scripts', 'big_slider_scripts', PHP_INT_MAX);

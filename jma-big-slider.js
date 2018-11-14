@@ -49,8 +49,8 @@ jQuery(document).ready(function($) {
                     'margin-top': (((window_height - $site_main.height()) / 2) + $top.height() / 2) + 'px'
                 });
             else
-                $site_main.css({
-                    'margin-top': (window_height - admin_bar_height - main_showing_by) + 'px'
+                $site_main.css({ //trailing 1 is for 1px of overlap site-main onto image
+                    'margin-top': (window_height - admin_bar_height - main_showing_by - 1) + 'px'
                 });
 
             $top.css('top', admin_bar_height + 'px');

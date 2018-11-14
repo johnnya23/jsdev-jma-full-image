@@ -72,8 +72,8 @@
 .big_slider_wide .jma-header-image {
     overflow: hidden;
     height: 0;
-    transition: all 1s;
-    -webkit-transition: all 1s;
+    transition: all 0.7s;
+    -webkit-transition: all 0.7s;
     display: block;
 }
 
@@ -89,6 +89,12 @@
     margin-top: 0;
 }
 
+.big_slider_wide #main {
+    max-width: 100%;
+    padding: 0;
+    border: none;
+}
+
 .big_slider_wide .site-footer {
     padding: 10px 0
 }
@@ -101,12 +107,19 @@
 
 .jma-local-menu {
     position: absolute;
-    top: 5px;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
     list-style-type: none;
     z-index: 1;
     padding-left: 0;
+    display: none;
+}
+
+/* don't display the menu until jquery is running */
+
+.big_slider_wide .jma-local-menu, .big_slider_narrow .jma-local-menu {
+    display: block
 }
 
 .jma-local-menu.fix-local {
@@ -120,5 +133,7 @@
 
 .jma-local-menu li a {
     transition: all 0.3s;
+    -webkit-transition: all 0.3s;
     padding: 10px 20px;
+    display: inline-block;
 }
