@@ -18,6 +18,9 @@ jQuery(document).ready(function($) {
 
     function fix_slider() {
         window_width = $window.width();
+        admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
+        top_add = $body.hasClass('constrict-header') ? 0 : $top.height();
+
         if (window_width > 992) {
             main_showing_by = 100;
             classes = $body.attr('class').split(' ');
@@ -29,13 +32,11 @@ jQuery(document).ready(function($) {
 
             }
             main_showing_by = parseInt(get_main_showing_by, 10);
-            console.log(main_showing_by);
+
             $body.addClass('big_slider_wide');
             $body.removeClass('big_slider_narrow');
-            admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
             top_add = $body.hasClass('constrict-header') ? 0 : $top.height();
             top_height = admin_bar_height + top_add;
-            $jma_header_image = $('.jma-header-image');
             image_width = $jma_header_image.data('image_width');
             image_height = $jma_header_image.data('image_height'); //console.log(image_width);
             image_ratio = image_height / image_width;
@@ -71,14 +72,6 @@ jQuery(document).ready(function($) {
             }
             offset = $body.hasClass('constrict-header') ? $window.scrollTop() : $window.scrollTop() - main_showing_by - admin_bar_height;
             header_adjustment = $body.hasClass('constrict-header') ? $top.height() + main_showing_by : main_showing_by;
-            $jma_local_menu = $('.jma-local-menu');
-            if (offset > available_height - header_adjustment - admin_bar_height) {
-                $jma_local_menu.addClass('fix-local');
-                $jma_local_menu.css('margin-top', (top_height + header_adjustment - main_showing_by) + 'px');
-            } else {
-                $jma_local_menu.removeClass('fix-local');
-                $jma_local_menu.css('margin-top', '');
-            }
         } else {
             $body.removeClass('big_slider_wide');
             $body.addClass('big_slider_narrow');
@@ -93,6 +86,21 @@ jQuery(document).ready(function($) {
                 'width': '',
                 'max-width': ''
             });
+            offset = $window.scrollTop();
+            //these values are for narrow window they get overwritten below
+            top_height = $top.height();
+            main_showing_by = header_adjustment = -(top_height + $jma_header_image.height());
+            top_height = admin_bar_height;
+            available_height = 0;
+            admin_bar_height = 0;
+        }
+        $jma_local_menu = $('.jma-local-menu');
+        if (offset > available_height - header_adjustment - admin_bar_height) {
+            $jma_local_menu.addClass('fix-local');
+            $jma_local_menu.css('top', (top_height + header_adjustment - main_showing_by) + 'px');
+        } else {
+            $jma_local_menu.removeClass('fix-local');
+            $jma_local_menu.css('top', '');
         }
     }
 
