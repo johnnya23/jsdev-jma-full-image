@@ -5,7 +5,7 @@
 function jma_big_header_input_box()
 {
     $screens = array('post', 'page', 'portfolio_item');
-    $screens = apply_filters('input_screens_filter', $screens);
+    $screens = apply_filters('jma_big_slider_input_screens_filter', $screens);
     foreach ($screens as $screen) {
         add_meta_box(
                 'jma_big_header_input_section',
