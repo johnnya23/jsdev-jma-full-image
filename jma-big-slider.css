@@ -71,6 +71,7 @@
     z-index: 200;
     border-right-width: 0 !important;
     border-left-width: 0 !important;
+    position: relative;
 }
 
 .big_slider .jma-header-image, .big_slider.constrict-header .site-header {

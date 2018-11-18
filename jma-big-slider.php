@@ -158,13 +158,13 @@ function bg_sl_dynamic_filter($dynamic_styles)
             array('padding', '0 20px'),
             );
     if ($jma_spec_options['border_shadow'] == 'on') {
-        $dynamic_styles['bg_sl_130'] = array('.big_slider_wide.constrict-header .site-header > .wrap, .big_slider_wide.constrict-header #main > .wrap, .big_slider_wide.constrict-header #custom-main',
+        $dynamic_styles['bg_sl_130'] = array('.big_slider_wide.constrict-header .site-header > .wrap, .big_slider_wide.constrict-header #main > .wrap, .big_slider_wide.constrict-header #custom-main, .big_slider_wide.constrict-header .site-footer',
                     array('-webkkit-box-shadow', '0 2px 10px ' . $jma_spec_options['footer_background_color']),
                     array('box-shadow', '0 2px 10px ' . $jma_spec_options['footer_background_color']),
                     );
     }
 
-    $dynamic_styles['bg_sl_140'] = array('.big_slider_wide.constrict-header .site-header, body.big_slider_wide.constrict-header #main, body.big_slider_wide #main > .wrap',
+    $dynamic_styles['bg_sl_140'] = array('.big_slider_wide.constrict-header .site-header, body.big_slider_wide.constrict-header #main, body.big_slider_wide #main > .wrap, .big_slider_wide.constrict-header #bottom',
             array('max-width', ($jma_spec_options['site_width']+40) . 'px'),
             array('margin', '0 auto'),
             array('padding-left', '20px'),
