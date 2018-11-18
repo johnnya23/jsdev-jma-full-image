@@ -155,12 +155,12 @@
 
 /* this is used by jquery to trigger small device code */
 
-.tb-floating-search {
+body .tb-floating-search {
     z-index: 1000;
 }
 
 @media(max-width:992px) {
-    .tb-floating-search {
+    body .tb-floating-search {
         z-index: 1001;
     }
     .jma-local-menu li {
