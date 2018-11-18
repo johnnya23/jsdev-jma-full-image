@@ -153,7 +153,16 @@
     border-left: solid 1px transparent;
 }
 
+/* this is used by jquery to trigger small device code */
+
+.tb-floating-search {
+    z-index: 1000;
+}
+
 @media(max-width:992px) {
+    .tb-floating-search {
+        z-index: 1001;
+    }
     .jma-local-menu li {
         font-size: 12px;
     }

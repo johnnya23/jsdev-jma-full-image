@@ -20,8 +20,8 @@ jQuery(document).ready(function($) {
         window_width = $window.width();
         admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
         top_add = $body.hasClass('constrict-header') ? 0 : $top.height();
-
-        if (window_width > 992) {
+        //reads @media query in jma-big-slider.css to trigger window size change
+        if (($(".tb-floating-search").css("z-index") == "1000")) {
             main_showing_by = 100;
             classes = $body.attr('class').split(' ');
             var i;
@@ -109,7 +109,7 @@ jQuery(document).ready(function($) {
 
     function fix_nav() {
         window_width = $window.width();
-        if (window_width > 992) {
+        if (($(".tb-floating-search").css("z-index") == "1000")) {
             $jma_header_image.find('.nivo-directionNav').css({
                 'width': window_width + 'px'
             });
