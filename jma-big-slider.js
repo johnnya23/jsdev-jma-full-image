@@ -67,7 +67,7 @@ jQuery(document).ready(function($) {
             } else {
                 $('.jma-header-image-wrap').css({
                     'width': image_width + 'px',
-                    'max-width': image_width + 'px'
+                    'max-width': '100%'
                 });
             }
             offset = $body.hasClass('constrict-header') ? $window.scrollTop() : $window.scrollTop() - main_showing_by - admin_bar_height;
