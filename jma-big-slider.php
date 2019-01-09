@@ -13,7 +13,8 @@ require('custom-meta.php');
 function use_big_slider()
 {
     global $post;
-    $return = false;
+    $header_values = $return = false;
+
     if (get_post_meta(get_the_ID(), '_jma_big_header_data_key', true)) {
         $header_values =  get_post_meta(get_the_ID(), '_jma_big_header_data_key', true);
     }

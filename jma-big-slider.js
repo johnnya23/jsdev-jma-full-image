@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
 
         $('html, body').animate({
             scrollTop: $(this.hash).offset().top - 180
-        }, 400);
+        }, 500);
 
     });
 
@@ -18,10 +18,7 @@ jQuery(document).ready(function($) {
 
     function fix_slider() {
         window_width = $window.width();
-        admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
-        top_add = $body.hasClass('constrict-header') ? 0 : $top.height();
-        //reads @media query in jma-big-slider.css to trigger window size change
-        if (($(".tb-floating-search").css("z-index") == "1000")) {
+        if (($(".copyright").css("margin-bottom") == "5px")) {
             main_showing_by = 100;
             classes = $body.attr('class').split(' ');
             var i;
@@ -35,8 +32,10 @@ jQuery(document).ready(function($) {
 
             $body.addClass('big_slider_wide');
             $body.removeClass('big_slider_narrow');
+            admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
             top_add = $body.hasClass('constrict-header') ? 0 : $top.height();
             top_height = admin_bar_height + top_add;
+            $jma_header_image = $('.jma-header-image');
             image_width = $jma_header_image.data('image_width');
             image_height = $jma_header_image.data('image_height'); //console.log(image_width);
             image_ratio = image_height / image_width;
@@ -72,6 +71,14 @@ jQuery(document).ready(function($) {
             }
             offset = $body.hasClass('constrict-header') ? $window.scrollTop() : $window.scrollTop() - main_showing_by - admin_bar_height;
             header_adjustment = $body.hasClass('constrict-header') ? $top.height() + main_showing_by : main_showing_by;
+            $jma_local_menu = $('.jma-local-menu');
+            if (offset > available_height - header_adjustment - admin_bar_height) {
+                $jma_local_menu.addClass('fix-local');
+                $jma_local_menu.css('margin-top', (top_height + header_adjustment - main_showing_by) + 'px');
+            } else {
+                $jma_local_menu.removeClass('fix-local');
+                $jma_local_menu.css('margin-top', '');
+            }
         } else {
             $body.removeClass('big_slider_wide');
             $body.addClass('big_slider_narrow');
@@ -86,21 +93,6 @@ jQuery(document).ready(function($) {
                 'width': '',
                 'max-width': ''
             });
-            offset = $window.scrollTop();
-            //these values are for narrow window they get overwritten below
-            top_height = $top.height();
-            main_showing_by = header_adjustment = -(top_height + $jma_header_image.height());
-            top_height = admin_bar_height;
-            available_height = 0;
-            admin_bar_height = 0;
-        }
-        $jma_local_menu = $('.jma-local-menu');
-        if (offset > available_height - header_adjustment - admin_bar_height) {
-            $jma_local_menu.addClass('fix-local');
-            $jma_local_menu.css('top', (top_height + header_adjustment - main_showing_by) + 'px');
-        } else {
-            $jma_local_menu.removeClass('fix-local');
-            $jma_local_menu.css('top', '');
         }
     }
 
@@ -109,7 +101,7 @@ jQuery(document).ready(function($) {
 
     function fix_nav() {
         window_width = $window.width();
-        if (($(".tb-floating-search").css("z-index") == "1000")) {
+        if (($(".copyright").css("margin-bottom") == "5px")) {
             $jma_header_image.find('.nivo-directionNav').css({
                 'width': window_width + 'px'
             });

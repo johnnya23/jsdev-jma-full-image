@@ -81,8 +81,8 @@
 .big_slider_wide .jma-header-image {
     overflow: hidden;
     height: 0;
-    transition: all 0.7s;
-    -webkit-transition: all 0.7s;
+    transition: all 0.6s;
+    -webkit-transition: all 0.6s;
     display: block;
 }
 
@@ -153,16 +153,7 @@
     border-left: solid 1px transparent;
 }
 
-/* this is used by jquery to trigger small device code */
-
-body .tb-floating-search {
-    z-index: 1000;
-}
-
 @media(max-width:992px) {
-    body .tb-floating-search {
-        z-index: 1001;
-    }
     .jma-local-menu li {
         font-size: 12px;
     }
