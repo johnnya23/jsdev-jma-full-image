@@ -1,6 +1,6 @@
 <?php
 /*
- * Adds a box to the main column on the Post and Page edit screens.
+ * Adds a box to the right column on the Post and Page edit screens.
  */
 function jma_big_header_input_box()
 {

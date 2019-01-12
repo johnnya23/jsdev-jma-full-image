@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: JMA Big Meta Slider jma child
-Description: This plugin intrages the meta sillder make a full size slider on selected pages
-Version: 1.0
+Plugin Name: JMA Big Meta Slider for 7.2
+Description: This plugin intrages the meta slider make a full size slider on selected pages for 7.2
+Version: 1.1
 Author: John Antonacci
 Author URI: http://cleansupersites.com
 License: GPL2

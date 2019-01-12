@@ -15,33 +15,61 @@ jQuery(document).ready(function($) {
     $body = $('body');
     $top = $('#top');
     $jma_header_image = $('.jma-header-image');
+    $old_im_loc = $('#top').find('.jma-header-item.image');
 
     function fix_slider() {
         window_width = $window.width();
-        if (($(".copyright").css("margin-bottom") == "5px")) {
-            main_showing_by = 100;
-            classes = $body.attr('class').split(' ');
-            var i;
-            for (i = 0; i < classes.length; ++i) {
-                if (classes[i].match("^jmashowamount")) {
-                    get_main_showing_by = classes[i].replace("jmashowamount", "");
-                }
-
+        window_height = $window.height();
+        admin_bar_scroll_height = admin_bar_height = 0;
+        if ($('#wpadminbar').length) {
+            admin_bar_scroll_height = admin_bar_height = $('#wpadminbar').height();
+            if ($('#wpadminbar').css('position') != 'fixed') {
+                admin_bar_scroll_height = 0;
             }
-            main_showing_by = parseInt(get_main_showing_by, 10);
+        }
+        //admin_bar_scroll_height = $('#wpadminbar').length && $('#wpadminbar').css('position') == 'fixed' ? $('#wpadminbar').height() : 0;
+        //admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
+        top_height = $top.height();
+        image_width = $jma_header_image.data('image_width');
+        image_height = $jma_header_image.data('image_height');
+        image_ratio = image_height / image_width;
+        scroll_top_height = $('#top').css('position') != 'fixed' ? admin_bar_scroll_height : admin_bar_scroll_height + top_height;
+        //how far from bottom of screen is top of page
+        main_showing_by = 100;
+        classes = $body.attr('class').split(' ');
+        var i;
+        for (i = 0; i < classes.length; ++i) {
+            if (classes[i].match("^jmashowamount")) {
+                get_main_showing_by = classes[i].replace("jmashowamount", "");
+            }
 
+        }
+
+        main_showing_by = $(".copyright").css("margin-bottom") == "5px" ? parseInt(get_main_showing_by, 10) : window_height - (top_height + admin_bar_height + window_width * image_ratio);
+
+
+        available_height = $body.hasClass('constrict-header') ? window_height : window_height - top_height - admin_bar_height - main_showing_by;
+        offset = $window.scrollTop();
+
+        //fix the page top (local) menu
+        $jma_local_menu = $('.jma-local-menu');
+        offset_top = window_height - scroll_top_height - main_showing_by;
+        margin_top = $body.hasClass('constrict-header') ? admin_bar_height : admin_bar_height + top_height;
+        console.log(scroll_top_height);
+        if (offset > offset_top) {
+            $jma_local_menu.addClass('fix-local');
+            $jma_local_menu.css('margin-top', scroll_top_height + 'px');
+        } else {
+            $jma_local_menu.removeClass('fix-local');
+            $jma_local_menu.css('margin-top', '');
+        }
+        //deal with the slider
+        if ($(".copyright").css("margin-bottom") == "5px") {
+            main_showing_by = parseInt(get_main_showing_by, 10);
             $body.addClass('big_slider_wide');
             $body.removeClass('big_slider_narrow');
-            admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
-            top_add = $body.hasClass('constrict-header') ? 0 : $top.height();
-            top_height = admin_bar_height + top_add;
             $jma_header_image = $('.jma-header-image');
-            image_width = $jma_header_image.data('image_width');
-            image_height = $jma_header_image.data('image_height'); //console.log(image_width);
-            image_ratio = image_height / image_width;
 
-            window_height = $window.height();
-            available_height = $body.hasClass('constrict-header') ? window_height : window_height - top_height - main_showing_by;
             available_ratio = available_height / window_width;
 
             if ($body.hasClass('center-vert'))
@@ -55,7 +83,7 @@ jQuery(document).ready(function($) {
 
             $top.css('top', admin_bar_height + 'px');
             $jma_header_image.css({
-                'top': top_height + 'px',
+                'top': margin_top + 'px',
                 'height': available_height + 'px'
             });
             if (image_ratio < available_ratio) {
@@ -68,16 +96,6 @@ jQuery(document).ready(function($) {
                     'width': image_width + 'px',
                     'max-width': '100%'
                 });
-            }
-            offset = $body.hasClass('constrict-header') ? $window.scrollTop() : $window.scrollTop() - main_showing_by - admin_bar_height;
-            header_adjustment = $body.hasClass('constrict-header') ? $top.height() + main_showing_by : main_showing_by;
-            $jma_local_menu = $('.jma-local-menu');
-            if (offset > available_height - header_adjustment - admin_bar_height) {
-                $jma_local_menu.addClass('fix-local');
-                $jma_local_menu.css('margin-top', (top_height + header_adjustment - main_showing_by) + 'px');
-            } else {
-                $jma_local_menu.removeClass('fix-local');
-                $jma_local_menu.css('margin-top', '');
             }
         } else {
             $body.removeClass('big_slider_wide');
@@ -99,7 +117,7 @@ jQuery(document).ready(function($) {
 
 
 
-    function fix_nav() {
+    function fix_slider_nav() {
         window_width = $window.width();
         if (($(".copyright").css("margin-bottom") == "5px")) {
             $jma_header_image.find('.nivo-directionNav').css({
@@ -124,7 +142,7 @@ jQuery(document).ready(function($) {
         function checknav() {
             i++;
             if ($('.nivo-directionNav').length || i > 10) {
-                fix_nav();
+                fix_slider_nav();
                 stopchecknav();
             }
         }
@@ -137,7 +155,7 @@ jQuery(document).ready(function($) {
 
     $window.resize(function() {
         fix_slider();
-        fix_nav();
+        fix_slider_nav();
     });
 
 });
