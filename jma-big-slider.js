@@ -55,7 +55,7 @@ jQuery(document).ready(function($) {
         $jma_local_menu = $('.jma-local-menu');
         offset_top = window_height - scroll_top_height - main_showing_by;
         margin_top = $body.hasClass('constrict-header') ? admin_bar_height : admin_bar_height + top_height;
-        console.log(scroll_top_height);
+
         if (offset > offset_top) {
             $jma_local_menu.addClass('fix-local');
             $jma_local_menu.css('margin-top', scroll_top_height + 'px');
@@ -136,21 +136,29 @@ jQuery(document).ready(function($) {
 
     $window.load(function() {
         fix_slider();
-        var myVar = setInterval(checknav, 100);
-        i = 0;
+    });
 
-        function checknav() {
-            i++;
-            if ($('.nivo-directionNav').length || i > 10) {
-                fix_slider_nav();
-                stopchecknav();
-            }
+    function handleCanvas(canvas) {
+        //do stuff here
+        fix_slider_nav();
+    }
+
+    // set up the mutation observer
+    var observer = new MutationObserver(function(mutations, bigheaderme) {
+        // `mutations` is an array of mutations that occurred
+        // `me` is the MutationObserver instance
+        var canvas = $('.nivo-directionNav').length;
+        if (canvas) {
+            handleCanvas(canvas);
+            bigheaderme.disconnect(); // stop observing
+            return;
         }
+    });
 
-        function stopchecknav() {
-            clearInterval(myVar);
-        }
-
+    // start observing
+    observer.observe(document, {
+        childList: true,
+        subtree: true
     });
 
     $window.resize(function() {
