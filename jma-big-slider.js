@@ -29,7 +29,10 @@ jQuery(document).ready(function($) {
         }
         //admin_bar_scroll_height = $('#wpadminbar').length && $('#wpadminbar').css('position') == 'fixed' ? $('#wpadminbar').height() : 0;
         //admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
-        top_height = $top.height();
+        top_height = 0;
+        $('.jma-header-item.image').prevAll().each(function() {
+            top_height += $(this).height();
+        });
         image_width = $jma_header_image.data('image_width');
         image_height = $jma_header_image.data('image_height');
         image_ratio = image_height / image_width;
@@ -38,6 +41,7 @@ jQuery(document).ready(function($) {
         main_showing_by = 100;
         classes = $body.attr('class').split(' ');
         var i;
+        var get_main_showing_by = 0;
         for (i = 0; i < classes.length; ++i) {
             if (classes[i].match("^jmashowamount")) {
                 get_main_showing_by = classes[i].replace("jmashowamount", "");
@@ -68,7 +72,6 @@ jQuery(document).ready(function($) {
             main_showing_by = parseInt(get_main_showing_by, 10);
             $body.addClass('big_slider_wide');
             $body.removeClass('big_slider_narrow');
-            $jma_header_image = $('.jma-header-image');
 
             available_ratio = available_height / window_width;
 
@@ -82,8 +85,9 @@ jQuery(document).ready(function($) {
                 });
 
             $top.css('top', admin_bar_height + 'px');
+            console.log(available_height);
             $jma_header_image.css({
-                'top': margin_top + 'px',
+                //'top': margin_top + 'px',
                 'height': available_height + 'px'
             });
             if (image_ratio < available_ratio) {
