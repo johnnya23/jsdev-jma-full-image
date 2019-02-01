@@ -81,6 +81,7 @@ jQuery(document).ready(function($) {
                     'margin-top': (window_height - admin_bar_height - main_showing_by - 1) + 'px'
                 });
 
+            $top.css('top', admin_bar_height + 'px');
             $jma_header_image.css({
                 'top': margin_top + 'px',
                 'height': available_height + 'px'
@@ -101,6 +102,7 @@ jQuery(document).ready(function($) {
             $body.addClass('big_slider_narrow');
             $('.image.jma-header-content').css('height', '');
             $site_main.css('margin-top', '');
+            $top.css('top', '');
             $('html').css('background', '');
             $jma_header_image.css({
                 'top': '',
