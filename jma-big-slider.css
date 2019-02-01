@@ -8,16 +8,21 @@
 }
 
 .big_slider_wide #access.fix-menu {
-    top: 0 !important;
-    position: relative;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
     z-index: 100;
 }
 
-.big_slider_wide #access {
-    height: inherit !important;
+.big_slider_wide.constrict-header #access.fix-menu>.wrap {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.big_slider_wide #access.fix-menu .site-logo {
+    position: absolute;
+    top: 0;
+    left: 20px;
 }
 
 .big_slider_wide .site-header .wrap>div {
@@ -28,6 +33,10 @@
     position: fixed;
     width: 100%;
     top: 0;
+}
+
+.big_slider_wide #top {
+    position: absolute;
 }
 
 .big_slider #container>#full-page-title {

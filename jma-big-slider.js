@@ -2,9 +2,7 @@ jQuery(document).ready(function($) {
     $site_main = $('.site-main');
 
     $site_main.on('click', '#menu-home > li > a', function(event) {
-
         event.preventDefault();
-
         $('html, body').animate({
             scrollTop: $(this.hash).offset().top - 180
         }, 500);
@@ -15,9 +13,8 @@ jQuery(document).ready(function($) {
     $body = $('body');
     $top = $('#top');
     $jma_header_image = $('.jma-header-image');
-    $old_im_loc = $('#top').find('.jma-header-item.image');
 
-    function fix_slider() {
+    function fix_slider(scroll) {
         window_width = $window.width();
         window_height = $window.height();
         admin_bar_scroll_height = admin_bar_height = 0;
@@ -27,24 +24,25 @@ jQuery(document).ready(function($) {
                 admin_bar_scroll_height = 0;
             }
         }
-        //admin_bar_scroll_height = $('#wpadminbar').length && $('#wpadminbar').css('position') == 'fixed' ? $('#wpadminbar').height() : 0;
-        //admin_bar_height = $('#wpadminbar').length ? $('#wpadminbar').height() : 0;
+
         top_height = $top.height();
         image_width = $jma_header_image.data('image_width');
         image_height = $jma_header_image.data('image_height');
         image_ratio = image_height / image_width;
-        scroll_top_height = $('#top').css('position') != 'fixed' ? admin_bar_scroll_height : admin_bar_scroll_height + top_height;
+        scroll_top_height = $('#access').css('position') != 'fixed' ? admin_bar_scroll_height : admin_bar_scroll_height + $('#access').height();
         //how far from bottom of screen is top of page
         main_showing_by = 100;
+        htmlbg = false;
         classes = $body.attr('class').split(' ');
         var i;
         for (i = 0; i < classes.length; ++i) {
             if (classes[i].match("^jmashowamount")) {
                 get_main_showing_by = classes[i].replace("jmashowamount", "");
             }
-
+            if (classes[i].match("^htmlbg")) {
+                htmlbg = classes[i].replace("htmlbg", "");
+            }
         }
-
         main_showing_by = $(".copyright").css("margin-bottom") == "5px" ? parseInt(get_main_showing_by, 10) : window_height - (top_height + admin_bar_height + window_width * image_ratio);
 
 
@@ -65,7 +63,9 @@ jQuery(document).ready(function($) {
         }
         //deal with the slider
         if ($(".copyright").css("margin-bottom") == "5px") {
-            main_showing_by = parseInt(get_main_showing_by, 10);
+            if (scroll || offset != 0) {
+                $('html').css('background', htmlbg);
+            }
             $body.addClass('big_slider_wide');
             $body.removeClass('big_slider_narrow');
             $jma_header_image = $('.jma-header-image');
@@ -81,7 +81,6 @@ jQuery(document).ready(function($) {
                     'margin-top': (window_height - admin_bar_height - main_showing_by - 1) + 'px'
                 });
 
-            $top.css('top', admin_bar_height + 'px');
             $jma_header_image.css({
                 'top': margin_top + 'px',
                 'height': available_height + 'px'
@@ -102,7 +101,7 @@ jQuery(document).ready(function($) {
             $body.addClass('big_slider_narrow');
             $('.image.jma-header-content').css('height', '');
             $site_main.css('margin-top', '');
-            $top.css('top', '');
+            $('html').css('background', '');
             $jma_header_image.css({
                 'top': '',
                 'height': ''
@@ -131,11 +130,11 @@ jQuery(document).ready(function($) {
 
 
     $window.scroll(function() {
-        fix_slider();
+        fix_slider(true);
     });
 
     $window.load(function() {
-        fix_slider();
+        fix_slider(false);
     });
 
     function handleCanvas(canvas) {
@@ -162,7 +161,7 @@ jQuery(document).ready(function($) {
     });
 
     $window.resize(function() {
-        fix_slider();
+        fix_slider(true);
         fix_slider_nav();
     });
 

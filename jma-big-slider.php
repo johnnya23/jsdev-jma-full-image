@@ -34,6 +34,19 @@ function jma_big_sl_body_cl($class)
 {
     global $jma_spec_options;
     global $post;
+
+    if (!$jma_spec_options['not_full_width_header']) {//is full width
+        $menu_has_bg = true;
+        $items = $jma_spec_options['header_content'];
+        foreach ($items as $item) {
+            if ($item['header_element'] == 'access' && $item['remove_root_bg']) {
+                $menu_has_bg = false;
+            }
+        }
+        //header_background_color
+        $html_bg = $menu_has_bg? $jma_spec_options['menu_background_color']: $jma_spec_options['header_background_color'];
+        $class[] = 'htmlbg' . $html_bg;
+    }
     $class[] = 'big_slider';
     $class[] = $jma_spec_options['center_main_vert'];
     $class[] = $jma_spec_options['not_full_width_header'];
@@ -118,7 +131,6 @@ add_action('after_setup_theme', 'jma_add_bg_sl__options');
 function bg_sl_dynamic_filter($dynamic_styles)
 {
     $jma_spec_options = jma_get_theme_values();
-
     $main_color = $jma_spec_options['big_main_background_color']? $jma_spec_options['big_main_background_color']: $jma_spec_options['site_page_color'];
     $main_color_info = get_tint($main_color);
     $root_rgb = $main_color_info['str_split'];
@@ -152,7 +164,6 @@ function bg_sl_dynamic_filter($dynamic_styles)
             );
     $dynamic_styles['bg_sl_117'] = array('.big_slider_wide #main',
             array('background', 'rgba(' . $root_rgb[0] . ',' . $root_rgb[1] . ',' . $root_rgb[2] . ',' . $jma_spec_options['main_trans'] . ')'),
-            array('border', 'solid 1px ' . $jma_spec_options['footer_background_color']),
             array('padding', '20px 0'),
             );
     $dynamic_styles['bg_sl_120'] = array('.big_slider_wide .site-main > .wrap #sidebar_layout',
@@ -171,12 +182,20 @@ function bg_sl_dynamic_filter($dynamic_styles)
             array('padding-left', '20px'),
             array('padding-right', '20px'),
             );
+    $dynamic_styles['bg_sl_141'] = array('.big_slider_wide.constrict-header #access.fix-menu',
+            array('max-width', ($jma_spec_options['site_width']) . 'px'),
+            array('padding-left', '0'),
+            array('padding-right', '0'),
+            );
+    $dynamic_styles['bg_sl_142'] = array('.big_slider_wide.constrict-header #access.fix-menu > .wrap',
+                array('-webkkit-box-shadow', '0 2px 10px ' . $jma_spec_options['footer_background_color']),
+                array('box-shadow', '0 2px 10px ' . $jma_spec_options['footer_background_color']),
+                );
 
     $dynamic_styles['bg_sl_144'] = array('.big_slider_wide.constrict-header .site-header, body.big_slider_wide.constrict-header .site-main',
                     array('background', 'none'),
                     );
     $dynamic_styles['bg_sl_150'] = array('.big_slider_wide.constrict-header .site-header > .wrap',
-            array('border', 'solid 1px ' . $jma_spec_options['footer_background_color']),
             array('background', $jma_spec_options['header_background_color'])
     );
     if ($jma_spec_options['body_shape'] == 'stretch') {
