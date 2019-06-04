@@ -1,12 +1,15 @@
 <?php
 /*
-Plugin Name: JMA Big Meta Slider for 7.2
-Description: This plugin intrages the meta slider make a full size slider on selected pages for 7.2
-Version: 1.1
+Plugin Name: JMA Big Header for 7.2
+Description: This plugin intrages the meta and soliloquy slider make a full size slider on selected pages for 7.2
+Version: 1.2
 Author: John Antonacci
 Author URI: http://cleansupersites.com
 License: GPL2
 */
+if (!defined('ABSPATH')) {
+    die('No direct access.');
+}
 
 require('custom-meta.php');
 

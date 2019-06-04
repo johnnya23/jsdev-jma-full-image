@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
     $site_main = $('.site-main');
 
-    $site_main.on('click', '#menu-home > li > a', function(event) {
+    $site_main.on('click', '.jma-local-menu > li > a', function(event) {
         event.preventDefault();
         $('html, body').animate({
             scrollTop: $(this.hash).offset().top - 180
@@ -24,7 +24,12 @@ jQuery(document).ready(function($) {
                 admin_bar_scroll_height = 0;
             }
         }
-
+        available_top_height = 0;
+        $top.find('#branding > .wrap').children().each(function() {
+            $this = $(this);
+            if (!$this.is('ul'))
+                available_top_height += $this.outerHeight();
+        });
         top_height = $top.height();
         image_width = $jma_header_image.data('image_width');
         image_height = $jma_header_image.data('image_height');
@@ -46,8 +51,9 @@ jQuery(document).ready(function($) {
         main_showing_by = $(".copyright").css("margin-bottom") == "5px" ? parseInt(get_main_showing_by, 10) : window_height - (top_height + admin_bar_height + window_width * image_ratio);
 
 
-        available_height = $body.hasClass('constrict-header') ? window_height : window_height - top_height - admin_bar_height - main_showing_by;
+        available_height = $body.hasClass('constrict-header') ? window_height : window_height - available_top_height - admin_bar_height - main_showing_by;
         offset = $window.scrollTop();
+        $body.data('available_height', available_height);
 
         //fix the page top (local) menu
         $jma_local_menu = $('.jma-local-menu');
@@ -72,6 +78,7 @@ jQuery(document).ready(function($) {
 
             available_ratio = available_height / window_width;
 
+
             if ($body.hasClass('center-vert'))
                 $site_main.css({
                     'margin-top': (((window_height - $site_main.height()) / 2) + $top.height() / 2) + 'px'
@@ -81,21 +88,23 @@ jQuery(document).ready(function($) {
                     'margin-top': (window_height - admin_bar_height - main_showing_by - 1) + 'px'
                 });
 
-            $top.css('top', admin_bar_height + 'px');
+            $top.css('top', admin_bar_height + 'px'); /**/
             $jma_header_image.css({
                 'top': margin_top + 'px',
                 'height': available_height + 'px'
             });
-            if (image_ratio < available_ratio) {
-                $('.jma-header-image-wrap').css({
-                    'width': (available_height * (1 / image_ratio)) + 'px',
-                    'max-width': (available_height * (1 / image_ratio)) + 'px'
-                });
-            } else {
-                $('.jma-header-image-wrap').css({
-                    'width': image_width + 'px',
-                    'max-width': '100%'
-                });
+            if (!(scroll || offset != 0)) {
+                if (image_ratio < available_ratio) {
+                    $('.jma-header-image-wrap').css({
+                        'width': (available_height * (1 / image_ratio)) + 'px',
+                        'max-width': (available_height * (1 / image_ratio)) + 'px'
+                    });
+                } else {
+                    $('.jma-header-image-wrap').css({
+                        'width': image_width + 'px',
+                        'max-width': '100%'
+                    });
+                }
             }
         } else {
             $body.removeClass('big_slider_wide');
@@ -160,6 +169,20 @@ jQuery(document).ready(function($) {
     observer.observe(document, {
         childList: true,
         subtree: true
+    });
+
+
+
+    $window.bind('bigslresizeEnd', function() {
+        //do something, window hasn't changed size in 1000ms
+        fix_slider(false);
+    });
+
+    $window.resize(function() {
+        if (this.bigslresizeTO) clearTimeout(this.bigslresizeTO);
+        this.bigslresizeTO = setTimeout(function() {
+            $(this).trigger('bigslresizeEnd');
+        }, 1000);
     });
 
     $window.resize(function() {

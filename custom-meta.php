@@ -2,6 +2,10 @@
 /*
  * Adds a box to the right column on the Post and Page edit screens.
  */
+
+if (!defined('ABSPATH')) {
+    die('No direct access.');
+}
 function jma_big_header_input_box()
 {
     $screens = array('post', 'page', 'portfolio_item');
@@ -20,7 +24,7 @@ function jma_big_header_input_box()
 add_action('add_meta_boxes', 'jma_big_header_input_box');
 
 /*
- * Prints the box content.
+ * Prints the box content
  *
  * @param WP_Post $post The object for the current post/page.
  */
