@@ -53,7 +53,7 @@ jQuery(document).ready(function($) {
 
         available_height = $body.hasClass('constrict-header') ? window_height : window_height - available_top_height - admin_bar_height - main_showing_by;
         offset = $window.scrollTop();
-        $body.data('available_height', available_height);
+        $body.attr('data-available_height', available_height);
 
         //fix the page top (local) menu
         $jma_local_menu = $('.jma-local-menu');
@@ -68,6 +68,8 @@ jQuery(document).ready(function($) {
             $jma_local_menu.css('margin-top', '');
         }
         //deal with the slider
+
+        //only 991px and wider
         if ($(".copyright").css("margin-bottom") == "5px") {
             if (scroll || offset != 0) {
                 $('html').css('background', htmlbg);
