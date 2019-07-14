@@ -31,13 +31,9 @@ function use_big_slider()
 function big_slider_scripts()
 {
     wp_enqueue_style('jma_big_slider_css', plugins_url('/jma-big-slider.css', __FILE__));
-    wp_enqueue_script('jma_big_slider_js', plugins_url('/jma-big-slider.js', __FILE__), array( 'jquery', 'adjust_site_js' ));
-}
-function jma_big_sl_body_cl($class)
-{
-    global $jma_spec_options;
-    global $post;
+    wp_enqueue_script('jma_big_slider_js', plugins_url('/jma-big-slider.js', __FILE__), array( 'jquery', 'adjust_site_js' ), '1.0', true);
 
+    global $jma_spec_options;
     if (!$jma_spec_options['not_full_width_header']) {//is full width
         $menu_has_bg = true;
         $items = $jma_spec_options['header_content'];
@@ -48,8 +44,16 @@ function jma_big_sl_body_cl($class)
         }
         //header_background_color
         $html_bg = $menu_has_bg? $jma_spec_options['menu_background_color']: $jma_spec_options['header_background_color'];
-        $class[] = 'htmlbg' . $html_bg;
+        $data = 'html{background:' . $html_bg . '}';
+
+        wp_add_inline_style('jma_big_slider_css', $data);
     }
+}
+function jma_big_sl_body_cl($class)
+{
+    global $jma_spec_options;
+    global $post;
+    
     $class[] = 'big_slider';
     $class[] = $jma_spec_options['center_main_vert'];
     $class[] = $jma_spec_options['not_full_width_header'];
@@ -139,6 +143,7 @@ function bg_sl_dynamic_filter($dynamic_styles)
     $root_rgb = $main_color_info['str_split'];
     $big_main_width = '100%';
     $big_main_padding = ' 0';
+
     if ($jma_spec_options['not_full_width_header']) {
         $big_main_width = $jma_spec_options['big_main_width']? ($jma_spec_options['big_main_width'])  . 'px': ($jma_spec_options['site_width']-2) . 'px';
         $big_main_padding = '0 20px';

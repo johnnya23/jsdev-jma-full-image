@@ -145,7 +145,7 @@
     left: 50%;
     transform: translateX(-50%);
     list-style-type: none;
-    z-index: 1;
+    z-index: 1000;
     padding-left: 0;
     display: none;
     width: 100%;
@@ -154,7 +154,6 @@
 }
 
 /* don't display the menu until jquery is running */
-
 .big_slider_wide .jma-local-menu, .big_slider_narrow .jma-local-menu {
     display: block
 }

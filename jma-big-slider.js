@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
     $top = $('#top');
     $jma_header_image = $('.jma-header-image');
 
-    function fix_slider(scroll) {
+    function fix_slider() {
         window_width = $window.width();
         window_height = $window.height();
         admin_bar_scroll_height = admin_bar_height = 0;
@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
         available_top_height = 0;
         $top.find('#branding > .wrap').children().each(function() {
             $this = $(this);
-            if (!$this.is('ul'))
+            if (!$this.is('ul') && !hasClass('replaced'))
                 available_top_height += $this.outerHeight();
         });
         top_height = $top.height();
@@ -37,15 +37,11 @@ jQuery(document).ready(function($) {
         scroll_top_height = $('#access').css('position') != 'fixed' ? admin_bar_scroll_height : admin_bar_scroll_height + $('#access').height();
         //how far from bottom of screen is top of page
         main_showing_by = 100;
-        htmlbg = false;
         classes = $body.attr('class').split(' ');
         var i;
         for (i = 0; i < classes.length; ++i) {
             if (classes[i].match("^jmashowamount")) {
                 get_main_showing_by = classes[i].replace("jmashowamount", "");
-            }
-            if (classes[i].match("^htmlbg")) {
-                htmlbg = classes[i].replace("htmlbg", "");
             }
         }
         main_showing_by = $(".copyright").css("margin-bottom") == "5px" ? parseInt(get_main_showing_by, 10) : window_height - (top_height + admin_bar_height + window_width * image_ratio);
@@ -71,9 +67,6 @@ jQuery(document).ready(function($) {
 
         //only 991px and wider
         if ($(".copyright").css("margin-bottom") == "5px") {
-            if (scroll || offset != 0) {
-                $('html').css('background', htmlbg);
-            }
             $body.addClass('big_slider_wide');
             $body.removeClass('big_slider_narrow');
             $jma_header_image = $('.jma-header-image');
@@ -94,19 +87,19 @@ jQuery(document).ready(function($) {
             $jma_header_image.css({
                 'top': margin_top + 'px',
                 'height': available_height + 'px'
-            });
-            if (!(scroll || offset != 0)) {
-                if (image_ratio < available_ratio) {
-                    $('.jma-header-image-wrap').css({
-                        'width': (available_height * (1 / image_ratio)) + 'px',
-                        'max-width': (available_height * (1 / image_ratio)) + 'px'
-                    });
-                } else {
-                    $('.jma-header-image-wrap').css({
-                        'width': image_width + 'px',
-                        'max-width': '100%'
-                    });
-                }
+            }).delay(500);
+            //cut off image left and right use all of height
+            if (image_ratio < available_ratio) {
+                $('.jma-header-image-wrap').css({
+                    'width': (available_height * (1 / image_ratio)) + 'px',
+                    'max-width': (available_height * (1 / image_ratio)) + 'px'
+                });
+            } else //cut off image top and bottom use all of width
+            {
+                $('.jma-header-image-wrap').css({
+                    'width': window_width + 'px',
+                    'max-width': ''
+                });
             }
         } else {
             $body.removeClass('big_slider_wide');
@@ -143,11 +136,11 @@ jQuery(document).ready(function($) {
 
 
     $window.scroll(function() {
-        fix_slider(true);
+        fix_slider();
     });
 
     $window.load(function() {
-        fix_slider(false);
+        fix_slider();
     });
 
     function handleCanvas(canvas) {
@@ -177,7 +170,7 @@ jQuery(document).ready(function($) {
 
     $window.bind('bigslresizeEnd', function() {
         //do something, window hasn't changed size in 1000ms
-        fix_slider(false);
+        fix_slider();
     });
 
     $window.resize(function() {
@@ -188,7 +181,7 @@ jQuery(document).ready(function($) {
     });
 
     $window.resize(function() {
-        fix_slider(true);
+        fix_slider();
         fix_slider_nav();
     });
 
