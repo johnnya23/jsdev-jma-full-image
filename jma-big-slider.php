@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: JMA Big Header for 7.2
+Plugin Name: JMA Big Header for 7.3
 Description: This plugin intrages the meta and soliloquy slider make a full size slider on selected pages for 7.2
-Version: 1.2
+Version: 1.3
 Author: John Antonacci
 Author URI: http://cleansupersites.com
 License: GPL2
@@ -31,7 +31,7 @@ function use_big_slider()
 function big_slider_scripts()
 {
     wp_enqueue_style('jma_big_slider_css', plugins_url('/jma-big-slider.css', __FILE__));
-    wp_enqueue_script('jma_big_slider_js', plugins_url('/jma-big-slider.js', __FILE__), array( 'jquery', 'adjust_site_js' ), '1.0', true);
+    wp_enqueue_script('jma_big_slider_js', plugins_url('/jma-big-slider.js', __FILE__), array( 'jquery' ), '1.0', true);
 
     global $jma_spec_options;
     if (!$jma_spec_options['not_full_width_header']) {//is full width
@@ -53,7 +53,7 @@ function jma_big_sl_body_cl($class)
 {
     global $jma_spec_options;
     global $post;
-    
+
     $class[] = 'big_slider';
     $class[] = $jma_spec_options['center_main_vert'];
     $class[] = $jma_spec_options['not_full_width_header'];
@@ -152,8 +152,8 @@ function bg_sl_dynamic_filter($dynamic_styles)
             array('position', 'relative'),
             array('transition', 'margin-top 0.5s'),
             array('-webkit-transition', 'margin-top 0.5s'),
-            array('transition-delay', '1s'),
-            array('-webkit-transition-delay', '1s'),
+            array('transition-delay', '0.5s'),
+            array('-webkit-transition-delay', '0.5s'),
             array('max-width', $big_main_width),
             array('margin', '0 auto'),
             array('padding', ' 0'),
@@ -245,6 +245,21 @@ function use_full_image($x)
     return $x;
 }
 
+function jma_big_header_image_html()
+{
+    global $jma_spec_options;
+    $items = $jma_spec_options['header_content'];
+    $target = false;
+    foreach ($items as $item) {
+        if ($item['header_element'] == 'image jma-header-content') {
+            $target = $item;
+        }
+    }
+    if ($target) {
+        jma_build_header_item($target, $jma_spec_options);
+    }
+}
+
 function big_slder_code()
 {
     global $jma_spec_options;
@@ -266,14 +281,22 @@ function big_slder_code()
         add_filter('header_image_code_size', 'use_full_image', 15);
         add_action('wp_enqueue_scripts', 'big_slider_scripts', 9999);
         add_filter('body_class', 'jma_big_sl_body_cl');
-        remove_action('jma_header_image', 'jma_header_image_html');
-        add_action('themeblvd_header_after', 'jma_header_image_html');
+
+        if (!function_exists('jma_build_header_item')) {
+            //move the image deprecates at base 7.3
+            remove_action('jma_header_image', 'jma_header_image_html');
+            add_action('themeblvd_header_after', 'jma_header_image_html');
+        } else {
+            //base 7.3+
+            add_filter('jma_build_header_image_jma_header_content_item', '__return_false');
+            add_action('themeblvd_header_after', 'jma_big_header_image_html');
+        }
         if ($jma_spec_options['body_shape'] == 'stretch') {
             add_action('themeblvd_main_top', 'jma_add_title', 999);
         }
     }
 }
-add_action('template_redirect', 'big_slder_code', 999);
+add_action('template_redirect', 'big_slder_code', 1);
 
 function jma_big_local_menu()
 {
