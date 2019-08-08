@@ -45,6 +45,7 @@ jQuery(document).ready(function($) {
         image_height = $jma_header_image.data('image_height');
         image_ratio = image_height / image_width;
         scroll_top_height = $('#access').css('position') != 'fixed' ? admin_bar_scroll_height : admin_bar_scroll_height + $('#access').height();
+
         //how far from bottom of screen is top of page
         main_showing_by = 100;
         classes = $body.attr('class').split(' ');
@@ -64,6 +65,11 @@ jQuery(document).ready(function($) {
         //fix the page top (local) menu
         $jma_local_menu = $('.jma-local-menu');
         offset_top = window_height - scroll_top_height - main_showing_by;
+        //if the image has overlays that go relative on small screens
+        if ($('.jma-header-item.image').children('.wrap').css('position') == 'relative') {
+            offset_top += $('.jma-header-item.image').children('.wrap').height();
+        }
+
         margin_top = $body.hasClass('constrict-header') ? admin_bar_height : admin_bar_height + available_top_height;
 
         if (offset > offset_top) {
@@ -75,12 +81,12 @@ jQuery(document).ready(function($) {
         }
         //deal with the slider
 
+        $image_elements = $('.jma-header-item.image.logo.image.jma-header-content.header-content, .jma-header-item.image.jma-header-content.sidebar.header-content');
         //only 991px and wider
         if ($('#dont-edit-this-element').css('z-index') == 20) {
             $body.addClass('big_slider_wide');
             $body.removeClass('big_slider_narrow');
             $jma_header_image = $('.jma-header-image');
-            $image_elements = $('.jma-header-item.image.logo.image.jma-header-content.header-content, .jma-header-item.image.jma-header-content.sidebar.header-content');
             available_ratio = available_height / window_width;
 
 
