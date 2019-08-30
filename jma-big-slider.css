@@ -6,8 +6,8 @@
 .big_slider_wide .jma-header-item.image.logo.image.jma-header-content.header-content, .big_slider_wide .jma-header-item.image.jma-header-content.sidebar.header-content {
     position: fixed;
     width: 100%;
-    transition: all 0.4s;
-    -webkit-transition: all 0.4s;
+    transition: all 0.8s;
+    -webkit-transition: all 0.8s;
 }
 
 .big_slider_wide #top {
@@ -45,6 +45,7 @@
     position: absolute;
 }
 
+/*
 .big_slider #container>#full-page-title {
     display: none;
 }
@@ -52,7 +53,7 @@
 .big_slider_narrow #container>#full-page-title {
     display: block;
 }
-
+*/
 .big_slider_wide .jma-header-image-wrap {
     position: absolute !important;
     top: 50%;
@@ -83,8 +84,8 @@
 
 .big_slider .jma-header-image {
     top: -1500px;
-    transition: all 0.4s;
-    -webkit-transition: all 0.4s;
+    transition: all 0.8s;
+    -webkit-transition: all 0.8s;
 }
 
 .big_slider_narrow .jma-header-image {

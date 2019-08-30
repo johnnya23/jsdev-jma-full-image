@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
-    $site_main = $('.site-main');
+    $site_main = $('.jma-header-item.image').next();
 
-    $site_main.on('click', '.jma-local-menu > li > a', function(event) {
+    $('.jma-local-menu > li > a').on('click', function(event) {
         event.preventDefault();
         $('html, body').animate({
             scrollTop: $(this.hash).offset().top - 180
@@ -52,10 +52,10 @@ jQuery(document).ready(function($) {
         var i;
         for (i = 0; i < classes.length; ++i) {
             if (classes[i].match("^jmashowamount")) {
-                get_main_showing_by = classes[i].replace("jmashowamount", "");
+                get_main_showing_by = parseInt(classes[i].replace("jmashowamount", ""), 10);
             }
         }
-        main_showing_by = $("#dont-edit-this-element").css("z-index") == 20 ? parseInt(get_main_showing_by, 10) : window_height - (top_height + admin_bar_height + window_width * image_ratio);
+        main_showing_by = $("#dont-edit-this-element").css("z-index") == 20 ? get_main_showing_by : window_height - (top_height + admin_bar_height + window_width * image_ratio);
 
 
         available_height = $body.hasClass('constrict-header') ? window_height : window_height - available_top_height - admin_bar_height - main_showing_by;
@@ -68,6 +68,9 @@ jQuery(document).ready(function($) {
         //if the image has overlays that go relative on small screens
         if ($('.jma-header-item.image').children('.wrap').css('position') == 'relative') {
             offset_top += $('.jma-header-item.image').children('.wrap').height();
+        }
+        if ($('#container > #full-page-title').length) {
+            offset_top += $('#full-page-title').height();
         }
 
         margin_top = $body.hasClass('constrict-header') ? admin_bar_height : admin_bar_height + available_top_height;
@@ -89,15 +92,9 @@ jQuery(document).ready(function($) {
             $jma_header_image = $('.jma-header-image');
             available_ratio = available_height / window_width;
 
-
-            if ($body.hasClass('center-vert'))
-                $site_main.css({
-                    'margin-top': (((window_height - $site_main.height()) / 2) + $top.height() / 2) + 'px'
-                });
-            else
-                $site_main.css({ //trailing 1 is for 1px of overlap site-main onto image
-                    'margin-top': (window_height - admin_bar_height - main_showing_by - 1) + 'px'
-                });
+            $site_main.css({ //trailing 1 is for 1px of overlap site-main onto image
+                'margin-top': (window_height - admin_bar_height - main_showing_by - 1) + 'px'
+            });
 
             $top.css('top', admin_bar_height + 'px'); /**/
             $jma_header_image.css({
@@ -142,22 +139,6 @@ jQuery(document).ready(function($) {
         }
     }
 
-
-
-
-    function fix_slider_nav() {
-        window_width = $window.width();
-        if (($(".copyright").css("margin-bottom") == "5px")) {
-            $jma_header_image.find('.nivo-directionNav').css({
-                'width': window_width + 'px'
-            });
-        } else {
-            $jma_header_image.find('.nivo-directionNav').css('width', '');
-        }
-    }
-
-
-
     $window.scroll(function() {
         fix_slider();
     });
@@ -165,31 +146,6 @@ jQuery(document).ready(function($) {
     $window.load(function() {
         fix_slider();
     });
-
-    function handleCanvas(canvas) {
-        //do stuff here
-        fix_slider_nav();
-    }
-
-    // set up the mutation observer
-    var observer = new MutationObserver(function(mutations, bigheaderme) {
-        // `mutations` is an array of mutations that occurred
-        // `me` is the MutationObserver instance
-        var canvas = $('.nivo-directionNav').length;
-        if (canvas) {
-            handleCanvas(canvas);
-            bigheaderme.disconnect(); // stop observing
-            return;
-        }
-    });
-
-    // start observing
-    observer.observe(document, {
-        childList: true,
-        subtree: true
-    });
-
-
 
     $window.bind('bigslresizeEnd', function() {
         //do something, window hasn't changed size in 1000ms
@@ -205,7 +161,6 @@ jQuery(document).ready(function($) {
 
     $window.resize(function() {
         fix_slider();
-        fix_slider_nav();
     });
 
 });
