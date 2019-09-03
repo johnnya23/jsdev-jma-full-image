@@ -3,58 +3,36 @@
     transform: none;
 }
 
-.big_slider_wide .jma-header-item.image.logo.image.jma-header-content.header-content, .big_slider_wide .jma-header-item.image.jma-header-content.sidebar.header-content {
+.full_image_wide #top {
+    z-index: 10
+}
+
+@media(min-width: 992px) {
+    .full_image .jma-header-image {
+        opacity: 0
+    }
+}
+
+.jma-header-item.image {
+    overflow: hidden;
+    /*height: 0;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;*/
+}
+
+.full_image_wide.constrict-header #branding>.wrap .jma-header-item.image, #branding>.wrap>.jma-header-item.image.fix-image {
     position: fixed;
     width: 100%;
-    transition: all 0.8s;
-    -webkit-transition: all 0.8s;
+    top: 0;
+    left: 0;
 }
 
-.big_slider_wide #top {
-    z-index: 300;
-}
-
-.big_slider_wide #access.fix-menu {
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-.big_slider_wide.constrict-header #access.fix-menu>.wrap {
+.full_image_wide.constrict-header #access>.wrap {
     padding-left: 0;
     padding-right: 0;
 }
 
-.big_slider_wide #access.fix-menu .site-logo {
-    position: absolute;
-    top: 0;
-    left: 20px;
-}
-
-.big_slider_wide .site-header .wrap>div {
-    margin-top: 0 !important;
-}
-
-.big_slider_wide #top, .big_slider_wide .jma-header-image {
-    position: fixed;
-    width: 100%;
-    top: 0;
-}
-
-.big_slider_wide #top {
-    position: absolute;
-}
-
-/*
-.big_slider #container>#full-page-title {
-    display: none;
-}
-
-.big_slider_narrow #container>#full-page-title {
-    display: block;
-}
-*/
-.big_slider_wide .jma-header-image-wrap {
+.full_image_wide .jma-header-image {
     position: absolute !important;
     top: 50%;
     left: 50%;
@@ -63,72 +41,55 @@
     width: 100%;
 }
 
-.big_slider_narrow .jma-header-image-wrap {
+.full_image_narrow .jma-header-image-wrap {
     width: 100% !important;
 }
 
-.big_slider .site-main {
-    position: relative;
+.full_image_wide.constrict-header #main>.wrap {
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
-.big_slider_wide .site-main, .big_slider_wide #bottom {
-    z-index: 200;
+.full_image_wide .site-main, .full_image_wide #bottom {
+    z-index: 19;
     border-right-width: 0 !important;
     border-left-width: 0 !important;
     position: relative;
 }
 
-.big_slider.constrict-header .site-header {
-    display: none;
-}
-
-.big_slider .jma-header-image {
-    top: -1500px;
-    transition: all 0.8s;
-    -webkit-transition: all 0.8s;
-}
-
-.big_slider_narrow .jma-header-image {
-    top: 0
-}
-
-.big_slider_wide .jma-header-image {
-    overflow: hidden;
-    height: 0;
-}
-
-.big_slider_wide.constrict-header .site-header, .big_slider_narrow.constrict-header .site-header, .big_slider_narrow .jma-header-image {
-    display: block;
-}
-
-.big_slider_wide.constrict-header .site-header, .big_slider_wide.constrict-header #main {
+.full_image_wide.constrict-header .site-header, .full_image_wide.constrict-header .site-main {
     background: none !important;
 }
 
-.big_slider_wide.constrict-header .jma-custom-wrap {
+.jma-custom-wrap, .site-main {
+    position: relative;
+    z-index: 5;
+}
+
+.full_image_wide.constrict-header .jma-custom-wrap {
     padding-left: 20px;
     padding-right: 20px;
 }
 
-.big_slider .site-main {
+.full_image_wide.constrict-header .element-section>.element {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.full_image_wide.expand-header #main, .full_image_wide.expand-header #custom-main {
+    max-width: 100%;
+    padding: 0
+}
+
+.full_image_wide.constrict-header .site-main {
     margin-top: 1000px;
 }
 
-.big_slider_narrow .site-main {
+.full_image_narrow .site-main {
     margin-top: 0;
 }
 
-.big_slider_wide #main {
-    max-width: 100%;
-    padding: 0;
-    border: none;
-}
-
-.big_slider_wide .site-footer {
-    padding: 10px 0
-}
-
-.big_slider_wide.constrict-header #top {
+.full_image_wide.constrict-header #top {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -142,14 +103,13 @@
     list-style-type: none;
     z-index: 1000;
     padding-left: 0;
-    display: none;
     width: 100%;
     text-align: center;
     font-size: 0;
 }
 
 /* don't display the menu until jquery is running */
-.big_slider_wide .jma-local-menu, .big_slider_narrow .jma-local-menu {
+.full_image_wide .jma-local-menu, .full_image_narrow .jma-local-menu {
     display: block
 }
 
