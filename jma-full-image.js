@@ -164,7 +164,9 @@ jQuery(document).ready(function($) {
     });
 
     $window.resize(function() {
-        fix_slider();
+        $.when(fix_slider()).then(function() {
+            $jma_header_image.css('opacity', 1);
+        });
     });
 
 });
