@@ -16,8 +16,6 @@ jQuery(document).ready(function($) {
         admin_bar_height = $('#wpadminbar').height();
     }
 
-
-
     function fix_local_menu() {
         if ($('#wpadminbar').css('position') != 'fixed') {
             admin_bar_height = 0;
@@ -55,6 +53,10 @@ jQuery(document).ready(function($) {
         }
     }
 
+    $jma_header_image_item = $('.jma-header-item.image');
+    //if there is a header element after image it becomes "$site_main"
+    $site_main = $jma_header_image_item.next().hasClass('mobile-nav') ? $('.site-main') : $jma_header_image_item.next();
+
     //deal with the slider
     function fix_slider() {
         if ($('#wpadminbar').css('position') != 'fixed') {
@@ -85,9 +87,6 @@ jQuery(document).ready(function($) {
             $body.addClass('full_image_wide');
             $body.removeClass('full_image_narrow');
             //jma-header-item wraps around jma-header-image
-            $jma_header_image_item = $('.jma-header-item.image');
-            //if there is a header element after image it becomes "$site_main"
-            $site_main = $jma_header_image_item.next().hasClass('mobile-nav') ? $('.site-main') : $jma_header_image_item.next();
             available_ratio = available_height / window_width;
 
             if ($body.hasClass('constrict-header')) {
