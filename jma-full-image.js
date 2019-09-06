@@ -157,15 +157,19 @@ jQuery(document).ready(function($) {
         if ($jma_local_menu.length) {
             fix_local_menu();
         }
-        $.when(fix_slider()).then(function() {
-            $jma_header_image.css('opacity', 1);
-        });
+        if ($body.hasClass('full_image')) {
+            $.when(fix_slider()).then(function() {
+                $jma_header_image.css('opacity', 1);
+            });
+        }
     });
 
     $window.resize(function() {
-        $.when(fix_slider()).then(function() {
-            $jma_header_image.css('opacity', 1);
-        });
+        if ($body.hasClass('full_image')) {
+            $.when(fix_slider()).then(function() {
+                $jma_header_image.css('opacity', 1);
+            });
+        }
     });
 
 });

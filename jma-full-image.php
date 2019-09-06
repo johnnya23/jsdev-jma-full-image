@@ -27,26 +27,39 @@ function jma_use_full_image()
     return $return;
 }
 
+function jma_use_menu()
+{
+    global $post;
+    $header_values = $return = false;
+
+    if (get_post_meta(get_the_ID(), '_jma_full_image_data_key', true)) {
+        $header_values =  get_post_meta(get_the_ID(), '_jma_full_image_data_key', true);
+    }
+    if (is_array($header_values)) {
+        $return = $header_values['big_menu'];
+    }
+    return $return;
+}
+
 
 function jma_full_image_scripts()
 {
-    wp_enqueue_style('jma_full_image_css', plugins_url('/jma-full-image.css', __FILE__));
-    wp_enqueue_script('jma_full_image_js', plugins_url('/jma-full-image.js', __FILE__), array( 'jquery' ), '1.0', true);
+    if (jma_use_full_image()  || jma_use_menu()) {
+        wp_enqueue_style('jma_full_image_css', plugins_url('/jma-full-image.css', __FILE__));
+        wp_enqueue_script('jma_full_image_js', plugins_url('/jma-full-image.js', __FILE__), array( 'jquery' ), '1.0', true);
 
-    global $jma_spec_options;
-    if (!$jma_spec_options['not_full_width_header']) {//is full width
-        $menu_has_bg = true;
-        $items = $jma_spec_options['header_content'];
-        foreach ($items as $item) {
-            if ($item['header_element'] == 'access' && $item['remove_root_bg']) {
-                $menu_has_bg = false;
+        /*global $jma_spec_options;
+        if (!$jma_spec_options['not_full_width_header']) {//is full width
+            $menu_has_bg = true;
+            $items = $jma_spec_options['header_content'];
+            foreach ($items as $item) {
+                if ($item['header_element'] == 'access' && $item['remove_root_bg']) {
+                    $menu_has_bg = false;
+                }
             }
-        }
-        //header_background_color
-        $html_bg = $menu_has_bg? $jma_spec_options['menu_background_color']: $jma_spec_options['header_background_color'];
-        $data = 'html{background:' . $html_bg . '}';
 
-        wp_add_inline_style('jma_full_image_css', $data);
+            //wp_add_inline_style('jma_full_image_css', $data);
+        }*/
     }
 }
 
