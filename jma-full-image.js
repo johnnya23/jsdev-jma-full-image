@@ -83,7 +83,7 @@ jQuery(document).ready(function($) {
         available_height = $body.hasClass('constrict-header') ? window_height - admin_bar_height : window_height - top_height - admin_bar_height - main_showing_by;
         $body.attr('data-available_height', window_height - top_height - admin_bar_height - main_showing_by);
         //only 991px and wider
-        if ($('#dont-edit-this-element').css('z-index') == 20) {
+        if ($('#dont-edit-this-element').css('z-index') == 20 && window_width > window_height) {
             $body.addClass('full_image_wide');
             $body.removeClass('full_image_narrow');
             //jma-header-item wraps around jma-header-image
@@ -150,7 +150,9 @@ jQuery(document).ready(function($) {
         if ($jma_local_menu.length) {
             fix_local_menu();
         }
-        fix_slider();
+        if ($body.hasClass('full_image')) {
+            fix_slider();
+        }
     });
 
     $window.load(function() {
